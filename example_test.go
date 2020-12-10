@@ -3,7 +3,7 @@ package orderedmap_test
 import (
 	"fmt"
 
-	"github.com/wk8/go-ordered-map"
+	"github.com/printesoi/go-ordered-map"
 )
 
 func Example() {

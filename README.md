@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/wk8/go-ordered-map.svg?branch=master)](https://travis-ci.org/wk8/go-ordered-map)
-
 # Goland Ordered Maps
 
 Same as regular maps, but also remembers the order in which keys were inserted, akin to [Python's `collections.OrderedDict`s](https://docs.python.org/3.7/library/collections.html#ordereddict-objects).
@@ -13,14 +11,14 @@ It offers the following features:
 
 ## Installation
 ```bash
-go get -u github.com/wk8/go-ordered-map
+go get -u github.com/printesoi/go-ordered-map
 ```
 
 Or use your favorite golang vendoring tool!
 
 ## Documentation
 
-[The full documentation is available on godoc.org](https://godoc.org/github.com/wk8/go-ordered-map).
+[The full documentation is available on godoc.org](https://godoc.org/github.com/printesoi/go-ordered-map).
 
 ## Example / usage
 
@@ -30,7 +28,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/wk8/go-ordered-map"
+	"github.com/printesoi/go-ordered-map"
 )
 
 func main() {
