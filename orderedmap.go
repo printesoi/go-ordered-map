@@ -9,11 +9,12 @@ package orderedmap
 
 import (
 	"container/list"
+	"encoding/json"
 )
 
 type Pair struct {
-	Key   interface{}
-	Value interface{}
+	Key   interface{} `json:"key"`
+	Value interface{} `json:"value"`
 
 	element *list.Element
 }
@@ -112,4 +113,35 @@ func listElementToPair(element *list.Element) *Pair {
 		return nil
 	}
 	return element.Value.(*Pair)
+}
+
+// MarshalJSON implements json.Marshaler interface
+func (om *OrderedMap) MarshalJSON() ([]byte, error) {
+	if om == nil {
+		return nil, nil
+	}
+
+	pairs := make([]*Pair, 0, len(om.pairs))
+	for it := om.Oldest(); it != nil; it = it.Next() {
+		pairs = append(pairs, it)
+	}
+	return json.Marshal(pairs)
+}
+
+// UnmarshalJSON implements json.Unmarshaler interface. Note that this method
+// does not reset the map before importing items!
+func (om *OrderedMap) UnmarshalJSON(data []byte) error {
+	if om == nil {
+		return nil
+	}
+
+	var pairs []*Pair
+	if err := json.Unmarshal(data, &pairs); err != nil {
+		return err
+	}
+
+	for _, p := range pairs {
+		om.Set(p.Key, p.Value)
+	}
+	return nil
 }

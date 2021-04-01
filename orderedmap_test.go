@@ -2,6 +2,7 @@ package orderedmap
 
 import (
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"math/rand"
 	"testing"
@@ -221,6 +222,42 @@ func TestShuffle(t *testing.T) {
 
 			assertOrderedPairsEqual(t, om, keys, values)
 		})
+	}
+}
+
+func TestJSON(t *testing.T) {
+	{
+		b, err := json.Marshal((*OrderedMap)(nil))
+		assert.NoError(t, err)
+		assert.Equal(t, "null", string(b))
+	}
+	{
+		om := New()
+		b, err := json.Marshal(om)
+		assert.NoError(t, err)
+		assert.Equal(t, "[]", string(b))
+	}
+	{
+		om, omd := New(), New()
+
+		n, ranLen := 10, 20
+		keys := make([]interface{}, n)
+		values := make([]interface{}, n)
+
+		for i := 0; i < n; i++ {
+			keys[i] = fmt.Sprintf("%d_%s", i, randomHexString(t, ranLen))
+			values[i] = randomHexString(t, ranLen)
+
+			value, present := om.Set(keys[i], values[i])
+			assert.Nil(t, value)
+			assert.False(t, present)
+		}
+
+		b, err := json.Marshal(om)
+		assert.NoError(t, err)
+		assert.NoError(t, json.Unmarshal(b, omd))
+
+		assertOrderedPairsEqual(t, omd, keys, values)
 	}
 }
 
